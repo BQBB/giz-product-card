@@ -1,6 +1,8 @@
 import React from 'react';
-import Card from './Card';
-import Alert from './Alert';
+import Alert from './components/Alert';
+import Input from './components/Input';
+import Button from './components/Button';
+import Product from './components/Product';
 
 class App extends React.Component {
   constructor() {
@@ -18,7 +20,7 @@ class App extends React.Component {
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onNameChange = this.onNameChange.bind(this);
     this.onPriceChange = this.onPriceChange.bind(this);
-    this.Add = this.Add.bind(this);
+    this.onAdd = this.onAdd.bind(this);
     this.validate = this.validate.bind(this)
   }
 
@@ -69,7 +71,7 @@ class App extends React.Component {
   }
 
 
-  Add(e) {
+  onAdd(e) {
     if(!this.validate()) {
       this.setState({'alert':true})
       return
@@ -88,23 +90,16 @@ class App extends React.Component {
     return (
           <div className="App">
             <div className="header">
-              <input type="text" placeholder="Search Products" className="search-input" value={this.state.searchValue} onChange={this.onSearchChange} />
+            <Input type="text" placeholder="Search Products" class="search-input" value={this.state.searchValue} handelChange={this.onSearchChange} />
               <div>
-                <input type="text" placeholder="Name" className="input" value={this.state.productName} onChange={this.onNameChange} />
-                <input type="text" placeholder="Price" className="input" value={this.state.productPrice} onChange={this.onPriceChange} pattern="[0-9]+" />
-                <button className="btn" onClick={this.Add} >Add New</button>
+                <Input type="text" placeholder="Name" class="input" value={this.state.productName} handelChange={this.onNameChange} />
+                <Input type="text" placeholder="Price" class="input" value={this.state.productPrice} handelChange={this.onPriceChange} />
+                <Button class="btn" value="Add New" handelClick={this.onAdd} />
               </div>
             </div>
-
             {this.state.alert && <Alert msg={Object.values(this.state.msg)} />}
             <div className="body">
-              {
-                
-                this.state.filterdProducts.map((product,index)=>{
-                  return <Card key={index} name={product.name} price={product.price} />
-                })  
-               
-              }
+              <Product products={this.state.filterdProducts} />
             </div>
           </div>
       );
